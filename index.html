@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WYK</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="WYK — a lantern-river game that teaches real Python and algorithms to 10–16 year olds, built on learning science.">
+<meta name="theme-color" content="#0b1027">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b1027'/%3E%3Crect x='10' y='8' width='12' height='16' rx='2' fill='%23ffb547'/%3E%3Crect x='8' y='6' width='16' height='3' rx='1' fill='%233b2a22'/%3E%3Crect x='8' y='23' width='16' height='3' rx='1' fill='%233b2a22'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600;700&family=Shantell+Sans:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <button class="brand" data-go="title" aria-label="WYK home"><span class="lantern-mark" aria-hidden="true"></span>WYK</button>
+    <nav class="nav" aria-label="Main">
+      <button data-go="map">River</button>
+      <button data-go="review">Embers <span class="badge" id="due-badge" hidden>0</span></button>
+      <button data-go="codex">Codex</button>
+      <button data-go="sandbox">Open river</button>
+      <button id="btn-settings">Keeper's book</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- TITLE -->
+  <section id="scr-title" class="screen" hidden>
+    <div class="title-hero">
+      <div>
+        <p class="kicker">A lantern river · real Python · algorithms</p>
+        <h1 class="title-name">W<span>Y</span>K</h1>
+        <p class="title-tag">Light the river with code.</p>
+        <p class="title-copy">Every night the village floats its paper lanterns downstream so travellers can find their way home. The old keeper is retiring and has chosen you. You can't row the boat yourself. Instead you write keeper's script for Ember, a firefly in a paper boat, who does exactly what you write: nothing more, nothing less.</p>
+        <div class="title-actions">
+          <button class="btn primary" id="btn-begin">Begin</button>
+          <button class="btn" data-go="codex">See what you'll learn</button>
+        </div>
+        <div class="title-meta">
+          <span><b>10 stretches</b> of river</span>
+          <span><b id="title-levels">57</b> puzzles</span>
+          <span>Progress saves on this device</span>
+        </div>
+      </div>
+      <div class="title-stage">
+        <canvas id="demo-canvas" aria-label="A river of paper lanterns lighting one by one"></canvas>
+        <pre class="demo-code" id="demo-code"></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <section id="scr-map" class="screen" hidden>
+    <div class="map-head">
+      <div>
+        <p class="kicker" id="map-kicker">Keeper's route</p>
+        <h1>The River</h1>
+      </div>
+      <div class="stats" id="map-stats"></div>
+    </div>
+    <div id="ember-banner"></div>
+    <ol class="route" id="route"></ol>
+  </section>
+
+  <!-- LEVEL -->
+  <section id="scr-level" class="screen" hidden>
+    <div class="lvl-top">
+      <button class="btn ghost small" id="lvl-back">← River</button>
+      <div class="lvl-title">
+        <p class="kicker" id="lvl-kicker"></p>
+        <h1 id="lvl-name"></h1>
+      </div>
+      <div class="stars" id="lvl-stars" aria-label="Stars earned"></div>
+    </div>
+    <div class="lvl-grid">
+      <div class="col-stage">
+        <div class="stage" id="stage"><canvas id="river-canvas" aria-label="The river"></canvas></div>
+        <div class="hud" id="hud"></div>
+        <div class="io">
+          <div class="panel"><h3>Log</h3><pre class="console" id="console"></pre></div>
+          <div class="panel"><h3>Ember's memory</h3><div class="watch" id="watch"></div></div>
+        </div>
+      </div>
+      <div class="col-code">
+        <article class="brief paper" id="brief"></article>
+        <div id="task"></div>
+        <div class="controls" id="controls">
+          <button class="btn primary" id="btn-run" title="Run (Ctrl+Enter)">Run ▶</button>
+          <button class="btn" id="btn-step" title="Run one line at a time">Step</button>
+          <button class="btn" id="btn-stop" disabled>Stop</button>
+          <button class="btn ghost" id="btn-reset">Reset river</button>
+          <button class="btn ghost" id="btn-hint">Hint</button>
+          <label class="speed" for="speed">Speed <input type="range" id="speed" min="1" max="5" step="1" value="3"></label>
+        </div>
+        <div class="feedback" id="feedback" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEW -->
+  <section id="scr-review" class="screen" hidden>
+    <div class="review" id="review"></div>
+  </section>
+
+  <!-- CODEX -->
+  <section id="scr-codex" class="screen" hidden>
+    <div class="codex" id="codex"></div>
+  </section>
+</main>
+
+<div class="modal" id="modal" hidden><div class="modal-card" id="modal-card" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="js/lang.js"></script>
+<script src="js/world.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/srs.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
